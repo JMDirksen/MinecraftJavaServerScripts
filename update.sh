@@ -38,7 +38,7 @@ screen -S $servername -p 0 -X stuff "stop^M"
 # Backup files
 [ $output ] && echo Creating backup...
 mkdir $backup
-cp -r $servername/world $backup/
+cp -r $servername $backup/
 
 # New vesion
 if [ ! -f "$file" ]; then
