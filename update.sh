@@ -7,7 +7,7 @@ servername=${1%/}
 
 # Init
 timestamp=$(date +%y%m%d%H%M%S)
-backup=$servername-backup-$timestamp
+backup=backup-$servername-$timestamp
 tty -s && output=1 || output=
 [ -d $servername ] || mkdir $servername
 [ -f $servername/version.txt ] || touch $servername/version.txt
@@ -37,7 +37,8 @@ screen -S $servername -p 0 -X stuff "stop^M"
 
 # Backup files
 [ $output ] && echo Creating backup...
-#cp $servername/world $backup/
+mkdir $backup
+cp -r $servername/world $backup/
 
 # New vesion
 if [ ! -f "$file" ]; then
