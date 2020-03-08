@@ -56,7 +56,5 @@ echo $version > $servername/version.txt
 
 # Start server
 [ $output ] && echo Starting server...
-pushd $servername > /dev/null
-screen -dmS $servername java -Xmx1G -Xms1G -jar server.jar nogui
-popd > /dev/null
+./start.sh $servername
 echo Updated $servername to version $version
