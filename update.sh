@@ -48,7 +48,6 @@ fi
 
 # Copy server
 [ $output ] && echo Copying...
-[ -d $servername ] || mkdir $servername
 cp $file $servername/server.jar
 
 # Register version
