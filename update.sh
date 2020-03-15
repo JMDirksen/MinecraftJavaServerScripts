@@ -33,7 +33,7 @@ fi
 # Stop server
 [ $output ] && echo Stopping server...
 screen -S $servername -p 0 -X stuff "stop^M"
-[ $? -eq 0 ] && sleep 5s
+[ $? -eq 0 ] && sleep 10s
 
 # Backup files
 [ $output ] && echo Creating backup...
