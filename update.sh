@@ -55,5 +55,5 @@ echo $version > $servername/version.txt
 
 # Start server
 [ $output ] && echo Starting server...
-./start.sh $servername
+./start.sh $servername $2
 echo Updated $servername to version $version
