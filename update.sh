@@ -1,16 +1,10 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
-# Check servername parameter
-[ -z $1 ] && echo Missing parameter 'servername' && exit 2
-servername=${1%/}
-
 # Init
-timestamp=$(date +%y%m%d%H%M%S)
-backup=backup-$servername-$timestamp
+servername=${PWD##*/}
 tty -s && output=1 || output=
-[ -d $servername ] || mkdir $servername
-[ -f $servername/version.txt ] || touch $servername/version.txt
+[ -f version ] || touch version
 
 # Get latest version
 [ $output ] && echo Checking latest version...
@@ -21,7 +15,7 @@ file=server.$version.jar
 [ $output ] && echo Latest version: $version
 
 # Installed version
-installed=$(cat $servername/version.txt)
+installed=$(cat version)
 [ $output ] && echo Installed version: $installed
 
 # Check if already on newest version
@@ -33,14 +27,15 @@ fi
 # Stop server
 [ $output ] && echo Stopping server...
 screen -S $servername -p 0 -X stuff "stop^M"
-[ $? -eq 0 ] && sleep 10s
+[ $? -eq 0 ] && sleep 15s
+screen -S $servername -p 0 -X quit
 
-# Backup files
+# Create backup
 [ $output ] && echo Creating backup...
-mkdir $backup
-cp -r $servername $backup/
+backupfile=backup-$servername-$(date +%y%m%d%H%M%S).tar.gz
+tar -zcf ../$backupfile .
 
-# New vesion
+# New version
 if [ ! -f "$file" ]; then
   [ $output ] && echo Downloading new version...
   wget -qO $file $url
@@ -48,12 +43,12 @@ fi
 
 # Copy server
 [ $output ] && echo Copying...
-cp $file $servername/server.jar
+cp $file server.jar
 
 # Register version
-echo $version > $servername/version.txt
+echo $version > version
 
 # Start server
 [ $output ] && echo Starting server...
-./start.sh $servername $2
+./start.sh
 echo Updated $servername to version $version
