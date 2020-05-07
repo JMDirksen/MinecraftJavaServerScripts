@@ -1,3 +1,6 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+
 echo "$1" >> pushover.log
 curl -s \
   --form-string "token=APP_TOKEN" \
